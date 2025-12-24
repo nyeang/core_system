@@ -1,0 +1,108 @@
+{{ define "content" }}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <!-- Stats Cards -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100 text-blue-500">
+                <i class="fas fa-users text-2xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-gray-500 text-sm">Total Users</p>
+                <p class="text-2xl font-bold">{{ .stats.totalUsers }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-green-100 text-green-500">
+                <i class="fas fa-film text-2xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-gray-500 text-sm">Total Animes</p>
+                <p class="text-2xl font-bold">{{ .stats.totalOrders }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-yellow-100 text-yellow-500">
+                <i class="fas fa-play-circle text-2xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-gray-500 text-sm">Episodes</p>
+                <p class="text-2xl font-bold">{{ .stats.revenue }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-purple-100 text-purple-500">
+                <i class="fas fa-user-plus text-2xl"></i>
+            </div>
+            <div class="ml-4">
+                <p class="text-gray-500 text-sm">New Users</p>
+                <p class="text-2xl font-bold">{{ .stats.newCustomers }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold mb-4 flex items-center">
+            <i class="fas fa-chart-line mr-2 text-blue-500"></i>
+            Recent Activity
+        </h3>
+        <div class="space-y-4">
+            <div class="flex items-center pb-4 border-b">
+                <div class="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium">New anime added: "Attack on Titan S4"</p>
+                    <p class="text-xs text-gray-500">2 hours ago</p>
+                </div>
+            </div>
+            <div class="flex items-center pb-4 border-b">
+                <div class="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium">User registered: john.doe@example.com</p>
+                    <p class="text-xs text-gray-500">5 hours ago</p>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <div class="w-2 h-2 bg-purple-500 rounded-full mr-3"></div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium">Episode uploaded: "One Piece EP 1050"</p>
+                    <p class="text-xs text-gray-500">1 day ago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold mb-4 flex items-center">
+            <i class="fas fa-fire mr-2 text-red-500"></i>
+            Popular Animes
+        </h3>
+        <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                <span class="text-sm font-medium">One Piece</span>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">15.2K views</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                <span class="text-sm font-medium">Naruto Shippuden</span>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">12.8K views</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
+                <span class="text-sm font-medium">Attack on Titan</span>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">10.5K views</span>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ template "admin" . }}

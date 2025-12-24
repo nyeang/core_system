@@ -1,0 +1,25 @@
+{{ define "sidebar" }}
+<div class="bg-gray-800 text-white w-64 flex-shrink-0">
+    <div class="p-4 border-b border-gray-700">
+        <h1 class="text-2xl font-bold">Core Anime</h1>
+        <p class="text-sm text-gray-400">Admin Panel</p>
+    </div>
+    <nav class="mt-4">
+        <a href="/admin/dashboard" class="block py-2.5 px-4 hover:bg-gray-700 transition">
+            <i class="fas fa-home mr-2"></i> Dashboard
+        </a>
+        <a href="/admin/users" class="block py-2.5 px-4 hover:bg-gray-700 transition">
+            <i class="fas fa-users mr-2"></i> Users
+        </a>
+        <a href="/admin/animes" class="block py-2.5 px-4 hover:bg-gray-700 transition">
+            <i class="fas fa-film mr-2"></i> Animes
+        </a>
+        <a href="/admin/episodes" class="block py-2.5 px-4 hover:bg-gray-700 transition">
+            <i class="fas fa-play-circle mr-2"></i> Episodes
+        </a>
+        <a href="/admin/settings" class="block py-2.5 px-4 hover:bg-gray-700 transition">
+            <i class="fas fa-cog mr-2"></i> Settings
+        </a>
+    </nav>
+</div>
+{{ end }}
