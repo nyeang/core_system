@@ -1,0 +1,103 @@
+{{ define "log_content" }}
+<div class="bg-white rounded-lg shadow">
+    <!-- Header with title and button -->
+    <div class="p-6 border-b flex justify-between items-center">
+        <h3 class="text-lg font-semibold">Logs & Reports</h3>
+        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center">
+            <i class="fas fa-download mr-2"></i> Export Logs
+        </button>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="p-6 grid grid-cols-1 md:grid-cols-4 gap-4 border-b">
+        <div class="bg-gray-50 rounded p-4 text-center">
+            <p class="text-gray-500 text-sm">Today's Total</p>
+            <p class="text-2xl font-bold text-gray-800">{{ .stats.total }}</p>
+        </div>
+        <div class="bg-green-50 rounded p-4 text-center">
+            <p class="text-gray-500 text-sm">Successful</p>
+            <p class="text-2xl font-bold text-green-600">{{ .stats.success }}</p>
+        </div>
+        <div class="bg-red-50 rounded p-4 text-center">
+            <p class="text-gray-500 text-sm">Failed</p>
+            <p class="text-2xl font-bold text-red-600">{{ .stats.failed }}</p>
+        </div>
+        <div class="bg-blue-50 rounded p-4 text-center">
+            <p class="text-gray-500 text-sm">Subsystems</p>
+            <p class="text-2xl font-bold text-blue-600">{{ len .subsystemStats }}</p>
+        </div>
+    </div>
+
+    <!-- Subsystem Stats -->
+    <div class="p-6 border-b">
+        <p class="text-sm text-gray-500 mb-3">Activity by Subsystem</p>
+        <div class="flex flex-wrap gap-3">
+            {{ range .subsystemStats }}
+            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm">
+                {{ .Subsystem }}: <strong>{{ .Count }}</strong>
+            </span>
+            {{ else }}
+            <span class="text-gray-400">No activity today</span>
+            {{ end }}
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50 text-gray-500 text-sm uppercase">
+                <tr>
+                    <th class="text-left p-4 font-medium">Time</th>
+                    <th class="text-left p-4 font-medium">User</th>
+                    <th class="text-left p-4 font-medium">Action</th>
+                    <th class="text-left p-4 font-medium">Subsystem</th>
+                    <th class="text-left p-4 font-medium">Status</th>
+                    <th class="text-left p-4 font-medium">IP Address</th>
+                    <th class="text-left p-4 font-medium">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                {{ range .log }}
+                <tr class="hover:bg-gray-50">
+                    <td class="p-4 text-sm">{{ .CreatedAt.Format "Jan 02, 15:04" }}</td>
+                    <td class="p-4 text-sm">{{ if .User.Email }}{{ .User.Email }}{{ else }}-{{ end }}</td>
+                    <td class="p-4">
+                        <span class="px-2 py-1 rounded text-xs font-medium
+                            {{ if eq .Action "login" }}bg-blue-100 text-blue-700
+                            {{ else if eq .Action "logout" }}bg-gray-100 text-gray-700
+                            {{ else if eq .Action "token_validate" }}bg-purple-100 text-purple-700
+                            {{ else }}bg-yellow-100 text-yellow-700{{ end }}">
+                            {{ .Action }}
+                        </span>
+                    </td>
+                    <td class="p-4 text-sm">{{ .Subsystem }}</td>
+                    <td class="p-4">
+                        <span class="px-2 py-1 rounded text-xs font-medium
+                            {{ if eq .Status "success" }}bg-green-100 text-green-700
+                            {{ else }}bg-red-100 text-red-700{{ end }}">
+                            {{ .Status }}
+                        </span>
+                    </td>
+                    <td class="p-4 text-sm text-gray-500">{{ .IPAddress }}</td>
+                    <td class="p-4">
+                        <button class="text-blue-500 hover:text-blue-700 mr-3">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                {{ else }}
+                <tr>
+                    <td colspan="7" class="p-8 text-center text-gray-400">
+                        <i class="fas fa-inbox text-4xl mb-2"></i>
+                        <p>No logs found</p>
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{ end }}

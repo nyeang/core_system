@@ -11,11 +11,8 @@ func RegisterRoutes(r *gin.Engine) {
 
 	api := r.Group("/api")
 	{
-		api.GET("/animes", controllers.GetAnimes)
-		api.GET("/episodes", controllers.GetEpisode)
 		api.GET("/users", controllers.GetUser)
 		api.GET("/users/:id", controllers.GetUserByID)
-		api.GET("/animes/:id", controllers.GetAnimeByID)
 	}
 
 	
@@ -28,7 +25,8 @@ func SetupRoutes(r *gin.Engine) {
     admin := r.Group("/admin")
     {
         admin.GET("/dashboard", adminCtrl.Dashboard)
-        admin.GET("/users", adminCtrl.Users)
+        admin.GET("/user", adminCtrl.User)
+        admin.GET("/logs", adminCtrl.Log)
         admin.GET("/settings", adminCtrl.Settings)
     }
     

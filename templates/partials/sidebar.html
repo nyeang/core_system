@@ -1,24 +1,41 @@
 {{ define "sidebar" }}
 <div class="bg-gray-800 text-white w-64 flex-shrink-0">
     <div class="p-4 border-b border-gray-700">
-        <h1 class="text-2xl font-bold">Core Anime</h1>
+        <h1 class="text-2xl font-bold">Core System</h1>
         <p class="text-sm text-gray-400">Admin Panel</p>
     </div>
+    
+    <!-- Core Menu -->
     <nav class="mt-4">
-        <a href="/admin/dashboard" class="block py-2.5 px-4 hover:bg-gray-700 transition">
-            <i class="fas fa-home mr-2"></i> Dashboard
+        <p class="px-4 text-xs text-gray-500 uppercase mb-2">Core</p>
+        <a href="/admin/dashboard" class="flex items-center py-2.5 px-4 hover:bg-gray-700 {{ if eq .page "dashboard" }}bg-gray-700{{ end }}">
+            <i class="fas fa-home mr-3 w-5"></i> Dashboard
         </a>
-        <a href="/admin/users" class="block py-2.5 px-4 hover:bg-gray-700 transition">
-            <i class="fas fa-users mr-2"></i> Users
+        <a href="/admin/user" class="flex items-center py-2.5 px-4 hover:bg-gray-700 {{ if eq .page "user" }}bg-gray-700{{ end }}">
+            <i class="fas fa-users mr-3 w-5"></i> Users
         </a>
-        <a href="/admin/animes" class="block py-2.5 px-4 hover:bg-gray-700 transition">
-            <i class="fas fa-film mr-2"></i> Animes
+        <a href="/admin/log" class="flex items-center py-2.5 px-4 hover:bg-gray-700 {{ if eq .page "log" }}bg-gray-700{{ end }}">
+            <i class="fas fa-history mr-3 w-5"></i> Logs & Reports
         </a>
-        <a href="/admin/episodes" class="block py-2.5 px-4 hover:bg-gray-700 transition">
-            <i class="fas fa-play-circle mr-2"></i> Episodes
+        <a href="/admin/settings" class="flex items-center py-2.5 px-4 hover:bg-gray-700 {{ if eq .page "settings" }}bg-gray-700{{ end }}">
+            <i class="fas fa-cog mr-3 w-5"></i> Settings
         </a>
-        <a href="/admin/settings" class="block py-2.5 px-4 hover:bg-gray-700 transition">
-            <i class="fas fa-cog mr-2"></i> Settings
+    </nav>
+    
+    <!-- Subsystems Links -->
+    <nav class="mt-6">
+        <p class="px-4 text-xs text-gray-500 uppercase mb-2">Subsystems</p>
+        <a href="http://localhost:8081" target="_blank" class="flex items-center py-2.5 px-4 hover:bg-gray-700 text-blue-400">
+            <i class="fas fa-play-circle mr-3 w-5"></i> Anime Streaming
+            <i class="fas fa-external-link-alt ml-auto text-xs"></i>
+        </a>
+        <a href="http://localhost:8082" target="_blank" class="flex items-center py-2.5 px-4 hover:bg-gray-700 text-green-400">
+            <i class="fas fa-comments mr-3 w-5"></i> Movie Forum
+            <i class="fas fa-external-link-alt ml-auto text-xs"></i>
+        </a>
+        <a href="http://localhost:8083" target="_blank" class="flex items-center py-2.5 px-4 hover:bg-gray-700 text-purple-400">
+            <i class="fas fa-book mr-3 w-5"></i> Book Shop
+            <i class="fas fa-external-link-alt ml-auto text-xs"></i>
         </a>
     </nav>
 </div>
