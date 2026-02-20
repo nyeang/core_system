@@ -43,7 +43,34 @@ type Setting struct {
     DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
 
+type Genre struct {
+    ID   uint   `gorm:"primaryKey" json:"id"`
+    Name string `gorm:"type:varchar(100);unique" json:"name"`
+}
+
+type Anime struct {
+    ID          uint      `gorm:"primaryKey" json:"id"`
+    Title       string    `gorm:"type:varchar(255)" json:"title"`
+    Description string    `gorm:"type:text" json:"description"`
+    ReleaseDate time.Time `json:"release_date"`
+    GenreID     uint      `json:"genre_id"`
+    Genre       Genre     `gorm:"foreignKey:GenreID" json:"genre,omitempty"`
+    CreatedAt   time.Time `json:"created_at"`
+}
+
+type Episode struct {
+    ID           uint   `gorm:"primaryKey" json:"id"`
+    AnimeID      uint   `gorm:"index" json:"anime_id"`
+    EpisodeNum   int    `json:"episode_num"`
+    VideoURL     string `gorm:"type:varchar(500)" json:"video_url"`
+    Duration     string `gorm:"type:varchar(20)" json:"duration"`
+    ThumbnailURL string `gorm:"type:varchar(500)" json:"thumbnail_url"`
+}
+
 // Table names
 func (User) TableName() string    { return "users" }
 func (AuthLog) TableName() string { return "auth_logs" }
 func (Setting) TableName() string { return "settings" }
+func (Genre) TableName() string   { return "genres" }
+func (Anime) TableName() string   { return "anime" }
+func (Episode) TableName() string { return "episodes" }
