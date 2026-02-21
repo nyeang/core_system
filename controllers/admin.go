@@ -21,7 +21,7 @@ func (ac *AdminController) Dashboard(c *gin.Context) {
     today := time.Now().Format("2006-01-02")
     
     config.DB.Model(&models.User{}).Count(&totalUsers)
-    config.DB.Model(&models.User{}).Where("status = ?", "active").Count(&activeUsers)
+    config.DB.Model(&models.User{}).Where("role = ?", "admin").Count(&activeUsers)
     config.DB.Model(&models.AuthLog{}).Where("DATE(created_at) = ? AND status = ?", today, "success").Count(&todayLogins)
     config.DB.Model(&models.AuthLog{}).Where("DATE(created_at) = ? AND status = ?", today, "failed").Count(&failedLogins)
     
