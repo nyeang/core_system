@@ -49,14 +49,25 @@ type Genre struct {
 }
 
 type Anime struct {
-    ID          uint      `gorm:"primaryKey" json:"id"`
-    Title       string    `gorm:"type:varchar(255)" json:"title"`
-    Description string    `gorm:"type:text" json:"description"`
-    ReleaseDate time.Time `json:"release_date"`
-    GenreID     uint      `json:"genre_id"`
-    Genre       Genre     `gorm:"foreignKey:GenreID" json:"genre,omitempty"`
-    CreatedAt   time.Time `json:"created_at"`
+    ID                 uint      `gorm:"primaryKey" json:"id"`
+    Title              string    `gorm:"type:varchar(255)" json:"title"`
+    Description        string    `gorm:"type:text" json:"description"`
+    ReleaseDate        time.Time `json:"release_date"`
+    GenreID            *uint     `json:"genre_id"`
+
+    // JPG images
+    ImageURL           string    `gorm:"type:varchar(500)" json:"image_url"`
+    SmallImageURL      string    `gorm:"type:varchar(500)" json:"small_image_url"`
+    LargeImageURL      string    `gorm:"type:varchar(500)" json:"large_image_url"`
+
+    // WebP images
+    ImageURLWebP       string    `gorm:"type:varchar(500)" json:"image_url_webp"`
+    SmallImageURLWebP  string    `gorm:"type:varchar(500)" json:"small_image_url_webp"`
+    LargeImageURLWebP  string    `gorm:"type:varchar(500)" json:"large_image_url_webp"`
+
+    CreatedAt          time.Time `json:"created_at"`
 }
+
 
 type Episode struct {
     ID           uint   `gorm:"primaryKey" json:"id"`

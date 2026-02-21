@@ -43,6 +43,8 @@ func ConnectDatabase() {
     err = db.AutoMigrate(
         &models.User{},
         &models.AuthLog{},
+        &models.Anime{},   
+        &models.Episode{}, 
     )
     
     if err != nil {

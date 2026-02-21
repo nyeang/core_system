@@ -1,40 +1,39 @@
 package routes
 
 import (
-	"core-anime/controllers"
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+    "core-anime/controllers"
+    "net/http"
+    "github.com/gin-gonic/gin"
 )
-
-func RegisterRoutes(r *gin.Engine) {
-
-	api := r.Group("/api")
-	{
-		api.GET("/users", controllers.GetUser)
-		api.GET("/users/:id", controllers.GetUserByID)
-	}
-
-	
-}
 
 func SetupRoutes(r *gin.Engine) {
     adminCtrl := &controllers.AdminController{}
-    
-    // Admin routes
-    admin := r.Group("/admin")
-    {
-        admin.GET("/dashboard", adminCtrl.Dashboard)
-        admin.GET("/user", adminCtrl.User)
-        admin.GET("/logs", adminCtrl.Log)
-        admin.GET("/settings", adminCtrl.Settings)
-    }
-    
-    // Redirect root to dashboard
+    authCtrl  := &controllers.AuthController{}
+
+    // Redirect root
     r.GET("/", func(c *gin.Context) {
         c.Redirect(http.StatusMovedPermanently, "/admin/dashboard")
     })
+
+    // Admin web routes
+    admin := r.Group("/admin")
+    {
+        admin.GET("/dashboard", adminCtrl.Dashboard)
+        admin.GET("/user",      adminCtrl.User)
+        admin.GET("/logs",      adminCtrl.Log)
+        admin.GET("/settings",  adminCtrl.Settings)
+    }
+
+    // API routes for subsystems
+    api := r.Group("/api")
+    {
+        api.POST("/auth/login",        authCtrl.Login)
+        api.GET("/auth/validate",      authCtrl.Validate)
+        api.GET("/anime",              controllers.GetAnimes)
+        api.GET("/anime/:id",          controllers.GetAnimeByID)
+        api.GET("/anime/:id/episodes", controllers.GetEpisodeByAnimeID)
+        api.GET("/episodes",           controllers.GetEpisode)
+        api.GET("/users",              controllers.GetUser)
+        api.GET("/users/:id",          controllers.GetUserByID)
+    }
 }
-
-
-
