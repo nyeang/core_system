@@ -1,13 +1,24 @@
 package main
 
 import (
-    "core-anime/config"
-    "core-anime/routes"
-    "github.com/gin-gonic/gin"
+	"core-anime/config"
+	"core-anime/models"
+	"core-anime/routes"
+	"log"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
     config.ConnectDatabase()
+
+    var count int64
+    config.DB.Model(&models.Anime{}).Count(&count)
+    if count == 0 {
+        log.Println("Seeding anime from Jikan...")
+        SeedAnimeFromJikan()
+    }
+
 
     r := gin.Default()
     r.LoadHTMLGlob("templates/**/*.html")
