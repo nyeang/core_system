@@ -11,6 +11,19 @@ type AnimeData struct {
     Score    float64 `json:"score"`
     Episodes int     `json:"episodes"`
     Images   Images  `json:"images"`
+    Genres   []GenreEntry `json:"genres"` 
+    Trailer  Trailer      `json:"trailer"` 
+}
+
+type GenreEntry struct {              
+    MalID int    `json:"mal_id"`
+    Name  string `json:"name"`
+}
+
+type Trailer struct {              
+    YoutubeID string `json:"youtube_id"`
+    URL       string `json:"url"`
+    EmbedURL  string `json:"embed_url"`
 }
 
 type Images struct {

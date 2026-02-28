@@ -53,7 +53,7 @@ type Anime struct {
     Title              string    `gorm:"type:varchar(255)" json:"title"`
     Description        string    `gorm:"type:text" json:"description"`
     ReleaseDate        time.Time `json:"release_date"`
-    GenreID            *uint     `json:"genre_id"`
+    Genres            string    `gorm:"type:varchar(500)" json:"genres"` 
 
     // JPG images
     ImageURL           string    `gorm:"type:varchar(500)" json:"image_url"`
@@ -66,6 +66,10 @@ type Anime struct {
     LargeImageURLWebP  string    `gorm:"type:varchar(500)" json:"large_image_url_webp"`
 
     CreatedAt          time.Time `json:"created_at"`
+    
+    TrailerURL      string `gorm:"type:varchar(500)" json:"trailer_url"`
+    TrailerEmbedURL string `gorm:"type:varchar(500)" json:"trailer_embed_url"`
+    TrailerYoutubeID string `gorm:"type:varchar(50)" json:"trailer_youtube_id"`
 }
 
 
