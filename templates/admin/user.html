@@ -1,10 +1,8 @@
 {{ define "user_content" }}
 <div class="bg-white rounded-lg shadow">
-    <div class="p-6 border-b flex justify-between items-center">
+    <div class="p-6 border-b">
         <h3 class="text-lg font-semibold">User Management</h3>
-        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-            <i class="fas fa-plus mr-2"></i> Add User
-        </button>
+        <p class="text-sm text-gray-400 mt-1">Users registered from all subsystems</p>
     </div>
     <div class="overflow-x-auto">
         <table class="w-full">
@@ -14,20 +12,24 @@
                     <th class="text-left p-4">Username</th>
                     <th class="text-left p-4">Email</th>
                     <th class="text-left p-4">Role</th>
-                    <th class="text-left p-4">Actions</th>
+                    <th class="text-left p-4">Registered</th>
                 </tr>
             </thead>
             <tbody class="divide-y">
                 {{ range .userList }}
                 <tr class="hover:bg-gray-50">
-                    <td class="p-4">{{ .ID }}</td>
-                    <td class="p-4">{{ .Username }}</td>
+                    <td class="p-4 text-gray-500">{{ .ID }}</td>
+                    <td class="p-4 font-medium">{{ .Username }}</td>
                     <td class="p-4">{{ .Email }}</td>
-                    <td class="p-4">{{ .Role }}</td>
                     <td class="p-4">
-                        <button class="text-blue-500 mr-2"><i class="fas fa-edit"></i></button>
-                        <button class="text-red-500"><i class="fas fa-trash"></i></button>
+                        <span class="px-2 py-1 rounded text-xs font-medium
+                            {{ if eq .Role "super_admin" }}bg-red-100 text-red-700
+                            {{ else if eq .Role "admin" }}bg-purple-100 text-purple-700
+                            {{ else }}bg-gray-100 text-gray-700{{ end }}">
+                            {{ .Role }}
+                        </span>
                     </td>
+                    <td class="p-4 text-gray-400 text-sm">{{ .CreatedAt.Format "Jan 02, 2006" }}</td>
                 </tr>
                 {{ else }}
                 <tr>
