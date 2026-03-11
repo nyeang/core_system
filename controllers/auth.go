@@ -40,29 +40,43 @@ type Claims struct {
 // ═══════════════════════════════════════════
 
 func (ac *AuthController) LoginPage(c *gin.Context) {
-	c.HTML(http.StatusOK, "login", gin.H{"title": "Admin Login"})
+	c.HTML(http.StatusOK, "login", gin.H{
+		"title": "Admin Login",
+	})
 }
 
 func (ac *AuthController) LoginSubmit(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBind(&req); err != nil {
-		c.HTML(http.StatusOK, "login", gin.H{"title": "Admin Login", "error": "Invalid input"})
+		c.HTML(http.StatusOK, "login", gin.H{
+			"title": "Admin Login",
+			"error": "Invalid input",
+		})
 		return
 	}
 
 	var user models.User
 	if err := config.DB.Where("email = ?", req.Email).First(&user).Error; err != nil {
-		c.HTML(http.StatusOK, "login", gin.H{"title": "Admin Login", "error": "Invalid email or password"})
+		c.HTML(http.StatusOK, "login", gin.H{
+			"title": "Admin Login",
+			"error": "Invalid email or password",
+		})
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password)); err != nil {
-		c.HTML(http.StatusOK, "login", gin.H{"title": "Admin Login", "error": "Invalid email or password"})
+		c.HTML(http.StatusOK, "login", gin.H{
+			"title": "Admin Login",
+			"error": "Invalid email or password",
+		})
 		return
 	}
 
 	if user.Role != "admin" && user.Role != "super_admin" {
-		c.HTML(http.StatusOK, "login", gin.H{"title": "Admin Login", "error": "Access denied"})
+		c.HTML(http.StatusOK, "login", gin.H{
+			"title": "Admin Login",
+			"error": "Access denied",
+		})
 		return
 	}
 
@@ -87,7 +101,6 @@ func (ac *AuthController) Register(c *gin.Context) {
 		subsystem = "unknown"
 	}
 
-	// Check if email already exists
 	var existing models.User
 	if err := config.DB.Where("email = ?", req.Email).First(&existing).Error; err == nil {
 		config.DB.Create(&models.AuthLog{
@@ -101,7 +114,6 @@ func (ac *AuthController) Register(c *gin.Context) {
 		return
 	}
 
-	// Hash password
 	hashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"success": false, "message": "Failed to hash password"})
@@ -120,7 +132,6 @@ func (ac *AuthController) Register(c *gin.Context) {
 		return
 	}
 
-	// Log successful register
 	config.DB.Create(&models.AuthLog{
 		UserID:    user.ID,
 		Action:    "register",
@@ -187,7 +198,6 @@ func (ac *AuthController) Login(c *gin.Context) {
 		return
 	}
 
-	// Log successful login
 	config.DB.Create(&models.AuthLog{
 		UserID:    user.ID,
 		Action:    "login",
@@ -269,10 +279,10 @@ func (ac *AuthController) Validate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
 		"data": gin.H{
-			"id":    claims.UserID,
-			"name":  claims.Name,
-			"email": claims.Email,
-			"role":  claims.Role,
+			"id":       claims.UserID,
+			"username": claims.Name,
+			"email":    claims.Email,
+			"role":     claims.Role,
 		},
 	})
 }
