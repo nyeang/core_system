@@ -1,0 +1,167 @@
+{{ define "episode_content" }}
+<div class="bg-white rounded-lg shadow">
+
+  <div class="p-6 border-b flex justify-between items-center">
+    <h3 class="text-lg font-semibold">Episode Management</h3>
+    <button
+      onclick="openEpisodeModal()"
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center">
+      <i class="fas fa-plus mr-2"></i> Add Episode
+    </button>
+  </div>
+
+  <div class="p-4 border-b">
+    <label class="block text-sm text-gray-600 mb-1">
+      Filter by Anime
+    </label>
+    <select id="episode-anime-filter"
+            class="border rounded px-3 py-2 w-full md:w-64">
+      <option value="">All Anime</option>
+      {{ range .animeList }}
+      <option value="{{ .ID }}">{{ .Title }}</option>
+      {{ end }}
+    </select>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead class="bg-gray-50 text-gray-500 text-sm uppercase">
+        <tr>
+          <th class="text-left p-4 font-medium">ID</th>
+          <th class="text-left p-4 font-medium">Anime</th>
+          <th class="text-left p-4 font-medium">Episode No.</th>
+          <th class="text-left p-4 font-medium">Title</th>
+          <th class="text-left p-4 font-medium">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y" id="episode-table-body">
+        {{ range .episodeList }}
+        <tr class="hover:bg-gray-50" data-anime-id="{{ .AnimeID }}">
+          <td class="p-4 text-sm">{{ .ID }}</td>
+          <td class="p-4 text-sm">{{ .Anime.Title }}</td>
+          <td class="p-4 text-sm">{{ .EpisodeNumber }}</td>
+          <td class="p-4 text-sm">{{ .Title }}</td>
+          <td class="p-4 text-sm">
+            <button onclick='editEpisode({{ .ID }})'
+                    class="text-blue-500 hover:text-blue-700 mr-3">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button onclick='deleteEpisode({{ .ID }})'
+                    class="text-red-500 hover:text-red-700">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {{ else }}
+        <tr>
+          <td colspan="5"
+              class="p-8 text-center text-gray-400">
+            No episodes found
+          </td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Episode modal -->
+<div id="episode-modal"
+     class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg w-full max-w-xl">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h3 id="episode-modal-title" class="text-lg font-semibold">Add Episode</h3>
+      <button onclick="closeEpisodeModal()" class="text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <form id="episode-form" class="p-6 space-y-4">
+      <input type="hidden" id="episode-id" name="id">
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Anime
+        </label>
+        <select id="episode-anime-id" name="anime_id" required
+                class="w-full border rounded px-3 py-2">
+          {{ range .animeList }}
+          <option value="{{ .ID }}">{{ .Title }}</option>
+          {{ end }}
+        </select>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Episode Number
+          </label>
+          <input type="number" id="episode-number" name="episode_number" required
+                 class="w-full border rounded px-3 py-2">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Duration (minutes)
+          </label>
+          <input type="number" id="episode-duration" name="duration"
+                 class="w-full border rounded px-3 py-2">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Title
+        </label>
+        <input type="text" id="episode-title" name="title"
+               class="w-full border rounded px-3 py-2">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">
+          Video URL (for streaming subsystem)
+        </label>
+        <input type="text" id="episode-video-url" name="video_url"
+               class="w-full border rounded px-3 py-2">
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-4 border-t">
+        <button type="button" onclick="closeEpisodeModal()"
+                class="px-4 py-2 rounded border text-gray-600">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+document.getElementById('episode-anime-filter').addEventListener('change', function () {
+  const value = this.value;
+  document.querySelectorAll('#episode-table-body tr[data-anime-id]').forEach(tr => {
+    if (!value || tr.dataset.animeId === value) {
+      tr.classList.remove('hidden');
+    } else {
+      tr.classList.add('hidden');
+    }
+  });
+});
+
+function openEpisodeModal() {
+  document.getElementById('episode-id').value = '';
+  document.getElementById('episode-form').reset();
+  document.getElementById('episode-modal-title').innerText = 'Add Episode';
+  document.getElementById('episode-modal').classList.remove('hidden');
+  document.getElementById('episode-modal').classList.add('flex');
+}
+function closeEpisodeModal() {
+  document.getElementById('episode-modal').classList.add('hidden');
+  document.getElementById('episode-modal').classList.remove('flex');
+}
+function editEpisode(id) { /* fill via AJAX */ }
+function deleteEpisode(id) { /* call delete endpoint */ }
+</script>
+{{ end }}
