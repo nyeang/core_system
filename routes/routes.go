@@ -9,6 +9,7 @@ import (
 func SetupRoutes(r *gin.Engine) {
     adminCtrl := &controllers.AdminController{}
     authCtrl  := &controllers.AuthController{}
+    logCtrl   := &controllers.LogController{}
 
     // Redirect root
     r.GET("/", func(c *gin.Context) {
@@ -28,7 +29,10 @@ func SetupRoutes(r *gin.Engine) {
     api := r.Group("/api")
     {
         api.POST("/auth/login",        authCtrl.Login)
+        api.POST("/auth/register",     authCtrl.Register)
         api.GET("/auth/validate",      authCtrl.Validate)
+        api.GET("/auth/me",            authCtrl.Me)
+        api.POST("/logs",              logCtrl.Store)
         api.GET("/anime",              controllers.GetAnimes)
         api.GET("/anime/:id",          controllers.GetAnimeByID)
         api.GET("/anime/:id/episodes", controllers.GetEpisodeByAnimeID)
