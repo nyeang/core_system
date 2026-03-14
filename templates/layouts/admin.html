@@ -19,6 +19,8 @@
                     {{ template "user_content" . }}
                 {{ else if eq .page "log" }}
                     {{ template "log_content" . }}
+                {{ else if eq .page "anime" }}
+                    {{ template "anime_content" . }}
                 {{ else if eq .page "settings" }}
                     {{ template "settings_content" . }}
                 {{ end }}

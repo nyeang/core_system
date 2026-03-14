@@ -22,6 +22,8 @@ func SetupRoutes(r *gin.Engine) {
         admin.GET("/dashboard", adminCtrl.Dashboard)
         admin.GET("/user",      adminCtrl.User)
         admin.GET("/logs",      adminCtrl.Log)
+        admin.GET("/anime", controllers.GetAnimeAdmin)
+        admin.POST("/anime/add", controllers.AddAnime)
         admin.GET("/settings",  adminCtrl.Settings)
     }
 

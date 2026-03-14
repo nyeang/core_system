@@ -17,17 +17,28 @@ func (ac *AdminController) Dashboard(c *gin.Context) {
     var activeUsers int64
     var todayLogins int64
     var failedLogins int64
-    
+
     today := time.Now().Format("2006-01-02")
-    
+
     config.DB.Model(&models.User{}).Count(&totalUsers)
-    config.DB.Model(&models.User{}).Where("role = ?", "admin").Count(&activeUsers)
-    config.DB.Model(&models.AuthLog{}).Where("DATE(created_at) = ? AND status = ?", today, "success").Count(&todayLogins)
-    config.DB.Model(&models.AuthLog{}).Where("DATE(created_at) = ? AND status = ?", today, "failed").Count(&failedLogins)
-    
+
+    // ✅ Users who logged in successfully today
+    config.DB.Model(&models.AuthLog{}).
+        Where("DATE(created_at) = ? AND status = ?", today, "success").
+        Distinct("user_id").
+        Count(&activeUsers)
+
+    config.DB.Model(&models.AuthLog{}).
+        Where("DATE(created_at) = ? AND status = ?", today, "success").
+        Count(&todayLogins)
+
+    config.DB.Model(&models.AuthLog{}).
+        Where("DATE(created_at) = ? AND status = ?", today, "failed").
+        Count(&failedLogins)
+
     var recentLogs []models.AuthLog
     config.DB.Preload("User").Order("created_at desc").Limit(5).Find(&recentLogs)
-    
+
     c.HTML(http.StatusOK, "admin", gin.H{
         "title": "Dashboard",
         "page":  "dashboard",
