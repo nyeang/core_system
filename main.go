@@ -1,12 +1,14 @@
 package main
 
 import (
+	"time"
 	"core-anime/config"
 	"core-anime/models"
 	"core-anime/routes"
+	"github.com/gin-contrib/cors"
 	"log"
 
-	"github.com/gin-gonic/gin"
+    "github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -23,16 +25,22 @@ func main() {
     r := gin.Default()
     r.LoadHTMLGlob("templates/**/*.html")
 
-    r.Use(func(c *gin.Context) {
-        c.Header("Access-Control-Allow-Origin", "*")
-        c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-        c.Header("Access-Control-Allow-Headers", "Authorization, Content-Type")
-        if c.Request.Method == "OPTIONS" {
-            c.AbortWithStatus(204)
-            return
-        }
-        c.Next()
-    })
+    r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{
+			"http://localhost:3000",
+		},
+		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders: []string{
+			"Origin",
+			"Content-Type",
+			"Accept",
+			"Authorization",
+			"X-Subsystem",
+		},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
     routes.SetupRoutes(r)
     r.Run(":8083")
