@@ -26,9 +26,11 @@ func main() {
     r.LoadHTMLGlob("templates/**/*.html")
 
     r.Use(cors.New(cors.Config{
-		AllowOrigins: []string{
-			"http://localhost:3000",
-		},
+        AllowOrigins: []string{
+            "http://165.22.250.160",
+            "http://188.166.184.64",
+            "http://152.42.220.220",
+        },
 		AllowMethods: []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders: []string{
 			"Origin",
